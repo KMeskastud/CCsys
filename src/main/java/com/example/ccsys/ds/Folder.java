@@ -5,16 +5,20 @@ import java.util.ArrayList;
 public class Folder {
 
     private int id;
+    private int parentId;
+    private int courseId;
     private String name;
-    private ArrayList<User> users;
-    private ArrayList<Folder> subFolders;
+    //private ArrayList<User> users;
+    //private ArrayList<Folder> subFolders;
 
     public Folder() {
     }
 
-    public Folder(int id, String name) {
+    public Folder(int id, int parentId, int courseId, String name) {
         this.id = id;
         this.name = name;
+        this.parentId = parentId;
+        this.courseId = courseId;
     }
 
     public Folder(String name) {
@@ -37,19 +41,35 @@ public class Folder {
         this.name = name;
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
-    public ArrayList<Folder> getSubFolders() {
-        return subFolders;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setSubFolders(ArrayList<Folder> subFolders) {
-        this.subFolders = subFolders;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
+
+    //public ArrayList<User> getUsers() {
+    //    return users;
+    //}
+
+    //public void setUsers(ArrayList<User> users) {
+    //    this.users = users;
+    //}
+
+    //public ArrayList<Folder> getSubFolders() {
+    //    return subFolders;
+    //}
+
+   //public void setSubFolders(ArrayList<Folder> subFolders) {
+     //   this.subFolders = subFolders;
+    //}
 }
