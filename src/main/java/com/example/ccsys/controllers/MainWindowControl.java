@@ -133,7 +133,6 @@ public class MainWindowControl{
         CreateCourseControl createCourseControl = fxmlLoader.getController();
         createCourseControl.setLoggedInUser(loggedInUser);
 
-
         Stage stage = (Stage) this.createCourseButton.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
@@ -406,9 +405,12 @@ public class MainWindowControl{
     public void selectAccessUser(MouseEvent mouseEvent) throws SQLException{
         if (this.userAccessList.getSelectionModel().getSelectedItem() != null) {
             String login = this.userAccessList.getSelectionModel().getSelectedItem().toString();
-            for (User user : this.accessedUsers) {
-                if(user.getLogin().equals(login))
-                    selectedAccessUser = user;
+
+            for (User user : this.getUsers()) {
+                for (User accessedUser : this.getAccessedUsers())
+                    if (accessedUser.getId() == user.getId())
+                        if(user.getLogin().equals(login))
+                            selectedAccessUser = user;
             }
         }
     }
@@ -428,10 +430,11 @@ public class MainWindowControl{
 
     public void setAccesedUsersList() throws SQLException {
         this.userAccessList.getItems().clear();
-        for (User user : this.getUsers())
+        for (User user : this.getUsers()) {
             for (User accessedUser : this.getAccessedUsers())
-                if(accessedUser.getId() == user.getId())
+                if (accessedUser.getId() == user.getId())
                     this.userAccessList.getItems().add(user.getLogin());
+        }
     }
 
     private ArrayList<User> getAccessedUsers() throws SQLException {

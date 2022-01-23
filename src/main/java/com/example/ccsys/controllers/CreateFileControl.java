@@ -34,7 +34,17 @@ public class CreateFileControl {
     }
 
     public void createFile(ActionEvent actionEvent) throws SQLException, IOException   {
-        DbQuerys.createFile(new File(this.fileName.getText(), selectedFolderId));
+
+        boolean doesExist = false;
+        for(File file : DbQuerys.getFiles(selectedFolderId)) {
+            if (file.getName().equals(this.fileName.getText())) {
+                LoginControl.alertMessage("File already exists");
+                doesExist = true;
+                break;
+            }
+        }
+        if(doesExist == false)
+            DbQuerys.createFile(new File(this.fileName.getText(), selectedFolderId));
         this.goBack();
     }
 

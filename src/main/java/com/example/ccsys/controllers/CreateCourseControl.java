@@ -29,7 +29,16 @@ public class CreateCourseControl {
     }
 
     public void createCourse(ActionEvent actionEvent) throws IOException, SQLException {
-        DbQuerys.createCourse(new Course(this.courseName.getText(), this.courseDescription.getText()), this.loggedInUser);
+        boolean doesExist = false;
+        for(Course course : DbQuerys.getAllCourses()) {
+            if (course.getName().equals(this.courseName.getText())) {
+                LoginControl.alertMessage("Course already exists");
+                doesExist = true;
+                break;
+            }
+        }
+        if(doesExist == false)
+            DbQuerys.createCourse(new Course(this.courseName.getText(), this.courseDescription.getText()), this.loggedInUser);
         this.goBack();
     }
 

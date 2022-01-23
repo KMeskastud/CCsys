@@ -81,7 +81,7 @@ public class DbQuerys {
         ArrayList<User> users = new ArrayList<>();
         connection = DbUtils.connectToDb();
         statement = connection.createStatement();
-        String query1 = "SELECT user_id FROM course_access WHERE  id = '" + courseId + "'";
+        String query1 = "SELECT user_id FROM course_access WHERE  course_id = '" + courseId + "'";
         ResultSet rs1 = statement.executeQuery(query1);
         while (rs1.next()) {
             users.add(new User(rs1.getInt("user_id")));
@@ -115,6 +115,22 @@ public class DbQuerys {
             }
 
         }
+        DbUtils.disconnectFromDb(connection, statement);
+        return courses;
+    }
+
+    public static ArrayList<Course> getAllCourses() throws SQLException {
+        ArrayList<Course> courses = new ArrayList<>();
+
+        connection = DbUtils.connectToDb();
+        statement = connection.createStatement();
+
+            String query = "SELECT * FROM course";
+            ResultSet rs1 = statement.executeQuery(query);
+            while (rs1.next()) {
+                courses.add(new Course(rs1.getInt(1), rs1.getString("course_name"), rs1.getString("description")));
+            }
+
         DbUtils.disconnectFromDb(connection, statement);
         return courses;
     }

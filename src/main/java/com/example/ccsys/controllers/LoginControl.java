@@ -56,11 +56,20 @@ public class LoginControl {
         }
         DbUtils.disconnectFromDb(connection, statement);
         if (userPosition.equals("Student") && userName != null)
+        {
             alertMessage("Logged in as Student");
+            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-user-window.fxml"));
+            Parent root = fxmlLoader.load();
+            MainUserWindowControl mainUserWindowControl = fxmlLoader.getController();
+            mainUserWindowControl.setLoggedInUser(new User(id, userName, userSurname, email, userPosition));
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) this.loginName.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
         else if (userPosition.equals("Lecturer") && userName != null)
+        {
             alertMessage("Logged in as Lecturer");
-
-        if(userName != null){
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window.fxml"));
             Parent root = fxmlLoader.load();
             MainWindowControl mainWindowControl = fxmlLoader.getController();
@@ -69,6 +78,7 @@ public class LoginControl {
             Stage stage = (Stage) this.loginName.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
+
         }
         else
             alertMessage("Bad credentials");
