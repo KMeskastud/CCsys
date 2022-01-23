@@ -27,6 +27,18 @@ public class User {
         this.Email = email;
     }
 
+    public User(int id) {
+        this.id = id;
+    }
+
+    public User( String login, int id, String name, String surname, String email) {
+        this.id = id;
+        this.Name = name;
+        this.Surname = surname;
+        this.Email = email;
+        this.login = login;
+    }
+
     public User(int id, String name, String surname, String email, String position) {
         this.id = id;
         this.Name = name;

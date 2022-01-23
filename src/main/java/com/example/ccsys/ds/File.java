@@ -15,6 +15,16 @@ public class File {
         this.folderId = folderId;
     }
 
+    public File(String name, int folderId) {
+        this.name = name;
+        this.folderId = folderId;
+    }
+
+    public File(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
@@ -31,4 +41,11 @@ public class File {
         this.name = name;
     }
 
+    public int getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(int folderId) {
+        this.folderId = folderId;
+    }
 }

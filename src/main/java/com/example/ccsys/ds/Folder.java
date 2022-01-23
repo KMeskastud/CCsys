@@ -21,6 +21,17 @@ public class Folder {
         this.courseId = courseId;
     }
 
+    public Folder(int parentId, int courseId, String name) {
+        this.name = name;
+        this.parentId = parentId;
+        this.courseId = courseId;
+    }
+
+    public Folder(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Folder(String name) {
         this.name = name;
     }
