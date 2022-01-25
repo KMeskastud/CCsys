@@ -14,6 +14,7 @@
         <property name="mappings">
             <props>
                 <prop key="/course">course</prop>
+                <prop key="/user">user</prop>
             </props>
         </property>
     </bean>
@@ -24,6 +25,15 @@
 
     <bean name="course"
           class="com.example.ccsys.webControllers.CourseWebController"
+    />
+    <bean name="user"
+          class="com.example.ccsys.webControllers.UserWebController"
+    />
+    <bean name="file"
+          class="com.example.ccsys.webControllers.FileWebController"
+    />
+    <bean name="folder"
+          class="com.example.ccsys.webControllers.FolderWebController"
     />
 
 

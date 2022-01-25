@@ -2,6 +2,7 @@ package com.example.ccsys.controllers;
 
 import com.example.ccsys.Start;
 import com.example.ccsys.ds.User;
+import com.example.ccsys.utils.DbQuerys;
 import com.example.ccsys.utils.DbUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,42 +39,41 @@ public class LoginControl {
     }
 
     public void ValidateLogin(ActionEvent actionEvent) throws SQLException, IOException{
-        connection = DbUtils.connectToDb();
-        statement = connection.createStatement();
-        String query = "SELECT * FROM user WHERE login = '" + loginName.getText() + "' AND password = '" + password.getText() + "'";
-        ResultSet rs = statement.executeQuery(query);
-        String userName = "null";
-        String userSurname = "null";
-        String userPosition = "null";
-        String email = "null";
-        int id = 0;
-        while (rs.next()) {
-            id = rs.getInt(1);
-            userName = rs.getString("person_name");
-            userSurname = rs.getString("person_surname");
-            userPosition = rs.getString("person_position");
-            email = rs.getString("person_email");
-        }
-        DbUtils.disconnectFromDb(connection, statement);
-        if (userPosition.equals("Student") && userName != null)
+        User user = DbQuerys.validateLogin(loginName.getText(), password.getText());//return position
+
+        if (user.getPosition().equals("Student") && user != null)
         {
             alertMessage("Logged in as Student");
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-user-window.fxml"));
             Parent root = fxmlLoader.load();
             MainUserWindowControl mainUserWindowControl = fxmlLoader.getController();
-            mainUserWindowControl.setLoggedInUser(new User(id, userName, userSurname, email, userPosition));
+            mainUserWindowControl.setLoggedInUser(user);
             Scene scene = new Scene(root);
             Stage stage = (Stage) this.loginName.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         }
-        else if (userPosition.equals("Lecturer") && userName != null)
+        else if (user.getPosition().equals("Lecturer") && user != null)
         {
             alertMessage("Logged in as Lecturer");
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window.fxml"));
             Parent root = fxmlLoader.load();
             MainWindowControl mainWindowControl = fxmlLoader.getController();
-            mainWindowControl.setLoggedInUser(new User(id, userName, userSurname, email, userPosition));
+            mainWindowControl.setLoggedInUser(user);
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) this.loginName.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+        }
+        else if (user != null && user.getPosition().equals("Super")) // cia tau butu klaida, nes pirma tikrini userio kazka ir tik tada useri
+            // pataisiau nes veliau pamirsciau
+        {
+            alertMessage("Logged in as SuperAdmin");
+            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window-admin.fxml"));
+            Parent root = fxmlLoader.load();
+            MainAdminWindowControl mainWindowControl = fxmlLoader.getController();
+            mainWindowControl.setLoggedInUser(user);
             Scene scene = new Scene(root);
             Stage stage = (Stage) this.loginName.getScene().getWindow();
             stage.setScene(scene);

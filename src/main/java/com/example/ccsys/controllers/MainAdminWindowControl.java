@@ -9,7 +9,6 @@ import com.example.ccsys.utils.DbQuerys;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,14 +16,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class MainWindowControl{
+public class MainAdminWindowControl {
 
     //coursesTab
     @FXML
@@ -67,8 +64,9 @@ public class MainWindowControl{
     public TextField surname;
     @FXML
     public TextField email;
-    @FXML
 
+    @FXML
+    public ListView userAdminList;
 
     private Connection connection;
     private Statement statement;
@@ -85,6 +83,9 @@ public class MainWindowControl{
     private File selectedFile;
     private User selectedAllUser;
     private User selectedAccessUser;
+
+    private User selectedAdminUser;
+
 
 
 
@@ -108,7 +109,7 @@ public class MainWindowControl{
     }
 
     private ArrayList<Course> getCourses(int userIdLike) throws SQLException {
-        ArrayList<Course> courses = DbQuerys.getCourses(userIdLike);
+        ArrayList<Course> courses = DbQuerys.getAllCourses();
         this.courses = courses;
         return courses;
     }
@@ -145,7 +146,7 @@ public class MainWindowControl{
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window.fxml")); //sketchy
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
-            MainWindowControl mainCoursesWindow = fxmlLoader.getController();
+            MainAdminWindowControl mainCoursesWindow = fxmlLoader.getController();
             mainCoursesWindow.setLoggedInUser(this.loggedInUser);
             Stage stage = (Stage) this.coursesList.getScene().getWindow();
             stage.setScene(scene);
@@ -268,7 +269,7 @@ public class MainWindowControl{
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
-            MainWindowControl mainCoursesWindow = fxmlLoader.getController();
+            MainAdminWindowControl mainCoursesWindow = fxmlLoader.getController();
             mainCoursesWindow.setLoggedInUser(this.loggedInUser);
             Stage stage = (Stage) this.coursesList.getScene().getWindow();
             stage.setScene(scene);
@@ -354,7 +355,7 @@ public class MainWindowControl{
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window.fxml")); //sketchy
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
-            MainWindowControl mainCoursesWindow = fxmlLoader.getController();
+            MainAdminWindowControl mainCoursesWindow = fxmlLoader.getController();
             mainCoursesWindow.setLoggedInUser(this.loggedInUser);
             Stage stage = (Stage) this.coursesList.getScene().getWindow();
             stage.setScene(scene);
@@ -453,5 +454,14 @@ public class MainWindowControl{
         }
         else
             LoginControl.alertMessage("Please fill all fields");
+    }
+
+    public void selectAdminUser(MouseEvent mouseEvent) {
+    }
+
+    public void resetUser(ActionEvent actionEvent) {
+    }
+
+    public void deleteUser(ActionEvent actionEvent) {
     }
 }

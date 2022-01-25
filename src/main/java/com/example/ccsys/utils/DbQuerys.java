@@ -32,6 +32,30 @@ public class DbQuerys {
     //Users//
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static User validateLogin(String login, String password) throws SQLException{
+
+        connection = DbUtils.connectToDb();
+        statement = connection.createStatement();
+        String query = "SELECT * FROM user WHERE login = '" + login + "' AND password = '" + password + "'";
+        ResultSet rs = statement.executeQuery(query);
+        String userName = "null";
+        String userSurname = "null";
+        String userPosition = "null";
+        String email = "null";
+        int id = 0;
+        while (rs.next()) {
+            id = rs.getInt(1);
+            userName = rs.getString("person_name");
+            userSurname = rs.getString("person_surname");
+            userPosition = rs.getString("person_position");
+            email = rs.getString("person_email");
+        }
+        DbUtils.disconnectFromDb(connection, statement);
+
+        User user = new User(id, userName, userSurname, email, userPosition);
+        return user;
+    }
+
     public static void createUser(User user) {
         try {
             connection = DbUtils.connectToDb();
@@ -77,6 +101,29 @@ public class DbQuerys {
         return users;
     }
 
+    public static User getUser(int userId) throws SQLException{//webui
+        connection = DbUtils.connectToDb();
+        statement = connection.createStatement();
+        String query = "SELECT * FROM user WHERE id = '" + userId + "'";
+        ResultSet rs = statement.executeQuery(query);
+        String userName = "null";
+        String userSurname = "null";
+        String userPosition = "null";
+        String email = "null";
+        int id = 0;
+        while (rs.next()) {
+            id = rs.getInt(1);
+            userName = rs.getString("person_name");
+            userSurname = rs.getString("person_surname");
+            userPosition = rs.getString("person_position");
+            email = rs.getString("person_email");
+        }
+        DbUtils.disconnectFromDb(connection, statement);
+
+        User user = new User(id, userName, userSurname, email, userPosition);
+        return user;
+    }
+
     public static ArrayList<User> getAccessedUsers(int courseId) throws SQLException{
         ArrayList<User> users = new ArrayList<>();
         connection = DbUtils.connectToDb();
@@ -93,6 +140,8 @@ public class DbQuerys {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
     //Courses//
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
     public static ArrayList<Course> getCourses(int userId) throws SQLException {
         ArrayList<Course> courses = new ArrayList<>();
@@ -167,10 +216,10 @@ public class DbQuerys {
             preparedStatement.execute();
 
             DbUtils.disconnectFromDb(connection, preparedStatement);
-            LoginControl.alertMessage("Course created");
+            //LoginControl.alertMessage("Course created");
         } catch (Exception e) {
             System.out.println(e);
-            LoginControl.alertMessage("Error creating Course" + e);
+            //LoginControl.alertMessage("Error creating Course" + e);
         }
     }
 
@@ -284,6 +333,8 @@ public class DbQuerys {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
     //Files//
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
     public static ArrayList<File> getFiles(int folderId) throws SQLException {
         ArrayList<File> files = new ArrayList<>();

@@ -52,15 +52,25 @@ public class CreateFolderControl {
     }
 
     public void goBack() throws IOException, SQLException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
-
-        MainWindowControl mainCoursesWindow = fxmlLoader.getController();
-        mainCoursesWindow.setLoggedInUser(this.loggedInUser);
-
-        Stage stage = (Stage) this.folderName.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+        if(loggedInUser.getPosition().equals("Super")) {
+            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window-admin.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            MainWindowControl mainCoursesWindow = fxmlLoader.getController();
+            mainCoursesWindow.setLoggedInUser(this.loggedInUser);
+            Stage stage = (Stage) this.folderName.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
+        else {
+            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("main-window.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            MainWindowControl mainCoursesWindow = fxmlLoader.getController();
+            mainCoursesWindow.setLoggedInUser(this.loggedInUser);
+            Stage stage = (Stage) this.folderName.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.ccsys.webControllers;
 
 import com.example.ccsys.ds.Course;
+import com.example.ccsys.ds.User;
+import com.example.ccsys.utils.DbQuerys;
 import com.example.ccsys.utils.DbUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,27 +12,45 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/course", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CourseWebController {
 
-    private static Connection connection;
-    private static Statement statement;
-    private static PreparedStatement preparedStatement;
+    @GetMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Course> getAllCourses() throws SQLException {
+        return DbQuerys.getAllCourses();
+    }
 
-    @GetMapping(value = "/course/allCourses", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Course> getAllCourses1() throws SQLException {
-        ArrayList<Course> courses = new ArrayList<>();
-        connection = DbUtils.connectToDb();
-        statement = connection.createStatement();
-        String query = "SELECT * FROM course";
-        ResultSet rs = statement.executeQuery(query);
-        while (rs.next()) {
-            courses.add(new Course(rs.getInt(1), rs.getString("course_name"), rs.getString("description")));
-        }
-        DbUtils.disconnectFromDb(connection, statement);
+    @GetMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Course> getCourses (@RequestParam("courseId") int courseId) throws SQLException {
+        return DbQuerys.getCourses(courseId);
+    }
 
-        return courses;
+    @DeleteMapping(value = "/delete")
+    public String deleteCourse (@RequestParam("courseId") int courseId) throws SQLException {
+        DbQuerys.deleteCourse(courseId);
+        return "Success";
+    }
+
+    @PostMapping(value = "/create")
+    public String createCourse (@RequestParam("userId") int userId, @RequestBody Map<String, String> properties) throws SQLException {
+        User user;
+        user = DbQuerys.getUser(userId);
+        String name = properties.get("name");
+        String description = properties.get("description");
+        Course course = new Course (name, description);
+        DbQuerys.createCourse(course, user);
+        return "Success";
+    }
+
+    @PutMapping(value = "/update")
+    public String updateCourse (@RequestBody Map<String, String> properties, @RequestParam("courseId") int courseId) throws SQLException {
+        String name = properties.get("name");
+        String description = properties.get("description");
+        Course course = new Course(name, description);
+        DbQuerys.editCourse(course, courseId);
+        return "Success";
     }
 }
